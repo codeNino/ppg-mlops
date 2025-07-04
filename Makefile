@@ -2,13 +2,13 @@ POETRY_VERSION= 2.1.3
 IMAGE_NAME := ppg_ms
 CONTAINER_NAME := ppg_ms_container
 TAG ?= latest
-FULL_IMAGE := $(IMAGE_NAME):$(TAG)
+HUB_IMAGE := $(DOCKER_USERNAME)/$(IMAGE_NAME):$(TAG)
 
 cloud-build-image:
-	docker build -t $(FULL_IMAGE) .
+	docker build -t $(HUB_IMAGE) .
 
 cloud-push-image:
-	docker push $(FULL_IMAGE)
+	docker push $(HUB_IMAGE)
 
 cloud-build-push-image: cloud-build-image cloud-push-image
 

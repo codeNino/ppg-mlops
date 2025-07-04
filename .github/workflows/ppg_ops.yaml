@@ -33,6 +33,6 @@ jobs:
 
       - name: Build and Push Docker Image using Makefile
         env:
-          IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/ppg_ms
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           TAG: latest
         run: make cloud-build-push-image
