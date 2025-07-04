@@ -19,7 +19,7 @@ test:
 
 
 install-cloud: install-poetry
-	~/.local/bin/poetry run pip install -r requirements-gcp.txt
+	~/.local/bin/poetry install
 
 
 lint-cloud:
