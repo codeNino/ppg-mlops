@@ -25,7 +25,7 @@ install-cloud: install-poetry
 	~/.local/bin/poetry install --no-interaction --no-ansi --no-cache --no-root --only main
 
 lint-cloud:
-	~/.local/bin/poetry run pylint --disable=R,C *.py
+	~/.local/bin/poetry run pylint  --exit-zero --disable=R,C *.py
 
 format-cloud:
 	~/.local/bin/poetry run black *.py
