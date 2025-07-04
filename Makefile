@@ -8,10 +8,6 @@ build-image:
 run-container: build-image
 	docker run --rm -it --name $(CONTAINER_NAME) $(IMAGE_NAME)
 
-
-run-cloud-container: build-image
-	docker run --rm -i --name $(CONTAINER_NAME) $(IMAGE_NAME)
-
 install-poetry:
 	curl -sSL https://install.python-poetry.org | python3 - && \
 	export PATH="$$HOME/.local/bin:$$PATH" && \
