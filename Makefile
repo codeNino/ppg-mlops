@@ -19,8 +19,7 @@ test:
 
 
 install-cloud: install-poetry
-	~/.local/bin/poetry install
-
+	~/.local/bin/poetry install --no-root
 
 lint-cloud:
 	~/.local/bin/poetry run pylint --disable=R,C *.py
