@@ -24,7 +24,7 @@ jobs:
 
   build-and-push:
     runs-on: ubuntu-latest
-    needs: build  # wait for tests to pass
+    needs: build
     steps:
       - uses: actions/checkout@v2
 
