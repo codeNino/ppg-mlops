@@ -9,12 +9,12 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.11
-    - name: Install dependencies
+    # - name: Install dependencies
+    #   run: |
+    #     make install-cloud
+    # - name: Lint
+    #   run: |
+    #     make lint-cloud
+    - name: Run
       run: |
-        make install-cloud
-    - name: Lint
-      run: |
-        make lint-cloud
-    - name: Test
-      run: |
-        make test-cloud
+        make run-cloud-container

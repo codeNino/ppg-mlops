@@ -1,4 +1,13 @@
 POETRY_VERSION= 2.1.3
+IMAGE_NAME := ppg_ms
+CONTAINER_NAME := ppg_ms_container
+
+build-image:
+	docker build -t $(IMAGE_NAME) .
+
+run-container: build-image
+	docker run --rm -it --name $(CONTAINER_NAME) $(IMAGE_NAME)
+
 
 install-poetry:
 	curl -sSL https://install.python-poetry.org | python3 - && \
@@ -32,3 +41,6 @@ format-cloud:
 
 test-cloud:
 	~/.local/bin/poetry run pytest -vv --cov=server test_server.py
+
+
+run-cloud-container: install-cloud lint-cloud test-cloud run-container
