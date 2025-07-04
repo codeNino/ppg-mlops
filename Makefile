@@ -17,9 +17,12 @@ format:
 test:
 	poetry run pytest -vv --cov=server test_server.py
 
+run:
+	poetry run python server.py
+
 
 install-cloud: install-poetry
-	~/.local/bin/poetry install --no-root
+	~/.local/bin/poetry install --no-interaction --no-ansi --no-cache --no-root -only main
 
 lint-cloud:
 	~/.local/bin/poetry run pylint --disable=R,C *.py
