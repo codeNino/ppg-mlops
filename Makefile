@@ -1,4 +1,4 @@
-POETRY_VERSION=1.8.2
+POETRY_VERSION= 2.1.3
 
 install-poetry:
 	curl -sSL https://install.python-poetry.org | python3 - && \
