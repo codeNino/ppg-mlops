@@ -42,5 +42,3 @@ format-cloud:
 test-cloud:
 	~/.local/bin/poetry run pytest -vv --cov=server test_server.py
 
-
-run-cloud-container: install-cloud lint-cloud test-cloud run-container
