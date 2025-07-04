@@ -35,4 +35,4 @@ jobs:
         env:
           IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/ppg_ms
           TAG: latest
-        run: make build-image
+        run: make cloud-build-push-image
