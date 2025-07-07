@@ -62,5 +62,4 @@ jobs:
             --region europe-west1 \
             --platform managed \
             --allow-unauthenticated \
-            --timeout 600s
 
