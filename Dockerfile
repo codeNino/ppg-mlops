@@ -49,9 +49,10 @@ COPY xgb_model.json /app/
 RUN useradd -m appuser
 USER appuser
 
-EXPOSE 8000
+ENV PORT=8080
+EXPOSE 8080
 
-ENTRYPOINT ["python3", "server.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
 
 
 
