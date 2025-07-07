@@ -63,5 +63,5 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --port 8080 \
-            --memory 1024
+            --memory 1024Mi
 
