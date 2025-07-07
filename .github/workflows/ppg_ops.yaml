@@ -1,6 +1,9 @@
 name: Azure Python 3.12
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   # build:
@@ -58,4 +61,6 @@ jobs:
             --image docker.io/${{ secrets.DOCKER_USERNAME }}/ppg_ms:latest \
             --region europe-west1 \
             --platform managed \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --timeout 600s
+
