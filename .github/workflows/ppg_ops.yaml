@@ -59,7 +59,9 @@ jobs:
         run: |
           gcloud run deploy ppg-prediction-service \
             --image docker.io/${{ secrets.DOCKER_USERNAME }}/ppg_ms:latest \
-            --region europe-west1 \
+            --region africa-south1 \
             --platform managed \
             --allow-unauthenticated \
+            --port 8080 \
+            --memory 1024
 
