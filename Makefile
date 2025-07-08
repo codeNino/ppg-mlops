@@ -36,8 +36,20 @@ test:
 	poetry run pytest -vv --cov=server test_server.py
 
 run:
-	poetry run python server.py
+	poetry run uvicorn server:app
 
+run-nohup:
+	~/.local/bin/poetry run nohup uvicorn server:app --host 0.0.0.0 --port 8000 & sleep 5
+
+load-test:
+	poetry run locust -f locustfile.py --headless -u 5 -r 1 --run-time 30s \
+  --host=http://localhost:8000 \
+  --exit-code-on-error 1
+
+cloud-load-test:
+	~/.local/bin/poetry run locust -f locustfile.py --headless -u 5 -r 1 --run-time 30s \
+  --host=http://localhost:8000 \
+  --exit-code-on-error 1
 
 install-cloud: install-poetry
 	~/.local/bin/poetry install --no-interaction --no-ansi --no-cache --no-root --only main

@@ -1,5 +1,19 @@
 import os
 
+
+from enum import Enum
+
+class Gender(str, Enum):
+    MALE = "Male"
+    FEMALE = "Female"
+
+def validate_gender(value: str) -> Gender:
+    try:
+        return Gender(value.capitalize())
+    except ValueError:
+        raise ValueError(f"Invalid gender: {value}. Must be 'Male' or 'Female'.")
+
+
 def list_csv_files(folder_path):
     """
     Returns a list of all CSV files in the specified folder.

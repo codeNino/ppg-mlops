@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 import pandas as pd
 import io
-import uvicorn
+from util import validate_gender
 from pipeline import get_features_for_prediction, reload_model
 from signal_analyzer import extract_ppg_features
 app = FastAPI()
@@ -27,11 +27,12 @@ async def upload_csv_and_fields(
     # Read the CSV content into a pandas DataFrame
     signal_contents = await signal.read()
     try:
+        sex = validate_gender(gender)
         signal_df = pd.read_csv(io.StringIO(signal_contents.decode("utf-8")))
         ppg_signal = signal_df.iloc[:, 0].values
         feature_dict = extract_ppg_features(ppg_signal)
         feature_dict["age"] = age
-        feature_dict["gender"] = gender
+        feature_dict["gender"] = sex.value
         feature_dict["height"] = height
         feature_dict["weight"] = weight
         feature_df = pd.DataFrame([feature_dict])
@@ -40,7 +41,7 @@ async def upload_csv_and_fields(
         return JSONResponse(float(prediction[0]), 200)
     except Exception as e:
         return JSONResponse(
-            status_code=500,
+            status_code=400,
             content=str(e)
         )
 
