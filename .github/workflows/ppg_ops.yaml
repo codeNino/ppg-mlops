@@ -19,57 +19,57 @@ jobs:
       - name: Install dependencies
         run: make install-cloud
 
+      - name: Lint
+        run: make lint-cloud
+
+      - name: Test
+        run: make test-cloud
+
       - name: Start backend
         run: |
           make run-nohup
 
-      - name: Run Locust in headless mode
+      - name: Run Locust in headless mode and Load Test
         run: |
           make cloud-load-test
 
-      # - name: Lint
-      #   run: make lint-cloud
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
 
-      # - name: Test
-      #   run: make test-cloud
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-  # build-and-push:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Build and Push Docker Image using Makefile
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          TAG: latest
+        run: make cloud-build-push-image
 
-  #     - name: Log in to Docker Hub
-  #       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+  deploy-to-cloud-run:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-  #     - name: Build and Push Docker Image using Makefile
-  #       env:
-  #         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  #         TAG: latest
-  #       run: make cloud-build-push-image
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: '${{ secrets.GCP_PROJECT_ID }}'
+          install_components: 'gcloud'
 
-  # deploy-to-cloud-run:
-  #   runs-on: ubuntu-latest
-  #   needs: build-and-push
-  #   steps:
-  #     - name: Authenticate to Google Cloud
-  #       uses: google-github-actions/auth@v2
-  #       with:
-  #         credentials_json: '${{ secrets.GCP_SA_KEY }}'
-
-  #     - name: Set up gcloud
-  #       uses: google-github-actions/setup-gcloud@v2
-  #       with:
-  #         project_id: '${{ secrets.GCP_PROJECT_ID }}'
-  #         install_components: 'gcloud'
-
-  #     - name: Deploy to Cloud Run
-  #       run: |
-  #         gcloud run deploy ppg-prediction-service \
-  #           --image docker.io/${{ secrets.DOCKER_USERNAME }}/ppg_ms:latest \
-  #           --region africa-south1 \
-  #           --platform managed \
-  #           --allow-unauthenticated \
-  #           --port 8080 \
-  #           --memory 1024Mi
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ppg-prediction-service \
+            --image docker.io/${{ secrets.DOCKER_USERNAME }}/ppg_ms:latest \
+            --region africa-south1 \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 1024Mi
 
