@@ -13,7 +13,7 @@ class UploadTestUser(HttpUser):
 
             data = {
                 "age": 30,
-                "gender": "F",
+                "gender": "Female",
                 "height" : 107,
                 "weight" : 65
             }
